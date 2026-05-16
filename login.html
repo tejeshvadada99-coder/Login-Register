@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login & Register</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            position: relative;
+            width: 500px;
+            height: 400px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: "";
+            position: absolute;
+            width: 700px;
+            height: 700px;
+            background: linear-gradient(blue, green, blue);
+            animation: rotate 4s linear infinite;
+            top: -35%;
+            left: -20%;
+        }
+
+        .container::after {
+            content: "";
+            position: absolute;
+            inset: 4px;
+            background: white;
+            border-radius: 12px;
+        }
+
+        #loginForm,
+        #registerForm {
+            position: relative;
+            z-index: 1;
+            padding: 25px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        input {
+            width: 80%;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 35px;
+            border: 1px solid gray;
+        }
+
+        button {
+            width: 50%;
+            margin-left: 110px;
+            padding: 15px;
+            background: linear-gradient(to right, blue, green);
+            color: white;
+            border-radius: 20px;
+            margin-top: 20px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .toggle {
+            text-align: center;
+            margin-top: 20px;
+            color: blue;
+            cursor: pointer;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+            margin: 5px 0;
+        }
+
+        @keyframes rotate {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div id="loginForm">
+        <h1>Login</h1>
+
+        <input type="text" id="loginUser" placeholder="Username">
+
+        <input type="password" id="loginPass" placeholder="Password">
+
+        <p id="loginError" class="error"></p>
+
+        <button onclick="login()">Login</button>
+
+        <div class="toggle" onclick="showRegister()">
+            Don't have an account? click here to Register
+        </div>
+    </div>
+
+    <div id="registerForm" style="display:none;">
+        <h1>Register</h1>
+
+        <input type="text" id="regUser" placeholder="Username">
+
+        <input type="password" id="regPass" placeholder="Password">
+
+        <p id="registerError" class="error"></p>
+
+        <button onclick="register()">Register</button>
+
+        <div class="toggle" onclick="showLogin()">
+            Already have an account? go to Login
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function showRegister() {
+        document.getElementById("loginForm").style.display = "none";
+        document.getElementById("registerForm").style.display = "block";
+    }
+
+    function showLogin() {
+        document.getElementById("loginForm").style.display = "block";
+        document.getElementById("registerForm").style.display = "none";
+    }
+
+    function register() {
+        let user = document.getElementById("regUser").value;
+        let pass = document.getElementById("regPass").value;
+        let error = document.getElementById("registerError");
+
+        if(user === "" || pass === "") {
+            error.innerText = "⚠ Please fill all fields";
+            return;
+        }
+
+        error.innerText = "";
+
+        localStorage.setItem("username", user);
+        localStorage.setItem("password", pass);
+
+        alert("Registration successful!");
+        showLogin();
+    }
+
+    function login() {
+        let user = document.getElementById("loginUser").value;
+        let pass = document.getElementById("loginPass").value;
+        let error = document.getElementById("loginError");
+
+        let storedUser = localStorage.getItem("username");
+        let storedPass = localStorage.getItem("password");
+
+        if(user === "" || pass === "") {
+            error.innerText = "⚠ Please fill all fields";
+            return;
+        }
+
+        if(user === storedUser && pass === storedPass) {
+            error.innerText = "";
+            alert("Login successful!");
+        } else {
+            error.innerText = "❌ Invalid username or password";
+        }
+    }
+</script>
+
+</body>
+</html>
